@@ -14,10 +14,10 @@ struct WebsiteDescription : Decodable{
 }
 
 struct Course : Decodable {
-    let id: Int
-    let name: String
-    let link: String
-    let imageUrl: String
+    let id: Int?
+    let name: String?
+    let link: String?
+    let imageUrl: String?
     
 //    init(json: [String: Any]) {
 //        id = json["id"] as? Int ?? -1
@@ -32,7 +32,7 @@ class ViewController: UIViewController {
     override func viewDidLoad() {
         super.viewDidLoad()
         
-        let jsonUrlString = "https://api.letsbuildthatapp.com/jsondecodable/website_description"
+        let jsonUrlString = "https://api.letsbuildthatapp.com/jsondecodable/courses_missing_fields"
         guard  let url = URL(string: jsonUrlString) else { return }
         
         URLSession.shared.dataTask(with: url) { (data, response, error) in
@@ -40,8 +40,10 @@ class ViewController: UIViewController {
             guard let data = data else {return}
   
             do {
-                let websiteDescription  = try JSONDecoder().decode(WebsiteDescription.self, from: data)
-                  print(websiteDescription.name, websiteDescription.description)
+                let courses  = try JSONDecoder().decode([Course].self, from: data)
+                print(courses)
+                
+                
 //                guard let json  = try JSONSerialization.jsonObject(with: data, options: .mutableContainers) as? [String : Any] else { return }
 //
 //                let course = Course(json: json)
