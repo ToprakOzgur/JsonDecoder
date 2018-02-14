@@ -7,18 +7,18 @@
 
 import UIKit
 
-struct Course {
+struct Course : Decodable {
     let id: Int
     let name: String
     let link: String
-    let imageURL: String
+    let imageUrl: String
     
-    init(json: [String: Any]) {
-        id = json["id"] as? Int ?? -1
-        name = json["name"] as? String ?? ""
-        link = json["link"] as? String ?? ""
-        imageURL = json["imageURL"] as? String ?? ""
-    }
+//    init(json: [String: Any]) {
+//        id = json["id"] as? Int ?? -1
+//        name = json["name"] as? String ?? ""
+//        link = json["link"] as? String ?? ""
+//        imageUrl = json["imageUrl"] as? String ?? ""
+//    }
 }
 
 class ViewController: UIViewController {
@@ -32,16 +32,15 @@ class ViewController: UIViewController {
         URLSession.shared.dataTask(with: url) { (data, response, error) in
             
             guard let data = data else {return}
-            
-            //            let dataAsString = String(data: data, encoding: .utf8)
-            //            print(dataAsString)
-            
+  
             do {
-                guard let json  = try JSONSerialization.jsonObject(with: data, options: .mutableContainers) as? [String : Any] else { return }
+                let course  = try JSONDecoder().decode(Course.self, from: data)
+                  print(course.name)
+//                guard let json  = try JSONSerialization.jsonObject(with: data, options: .mutableContainers) as? [String : Any] else { return }
+//
+//                let course = Course(json: json)
+//                print(course.name)
                 
-                let course = Course(json: json)
-                print(course.name
-                )
                 
             } catch let jsonnErr {
                 print("Error seriaalizin json:",jsonnErr)
